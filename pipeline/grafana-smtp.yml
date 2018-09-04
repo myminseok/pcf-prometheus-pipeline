@@ -4,10 +4,10 @@
   value:
     properties:
       grafana.smtp:
-        enabled: ((grafana.smtp.enabled))
-        host: ((grafana.smtp.host))
-        user: ((grafana.smtp.user))
-        password: ((grafana.smtp.password))
-        from_address: ((grafana.smtp.from_address))
-        from_name: ((grafana.smtp.from_name))
-        
+        enabled: ((grafana_smtp_enabled))
+        host: ((grafana_smtp_host))
+        user: ((grafana_smtp_user))
+        password: ((grafana_smtp_password))
+        from_address: ((grafana_smtp_from_address))
+        from_name: ((grafana_smtp_from_name))
+
