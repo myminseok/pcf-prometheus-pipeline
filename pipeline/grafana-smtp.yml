@@ -1,8 +1,7 @@
 # Grafana https://github.com/bosh-prometheus/prometheus-boshrelease/blob/master/jobs/grafana/spec
 - type: replace
-  path: /instance_groups/name=grafana/jobs/name=grafana/-
+  path: /instance_groups/name=grafana/jobs/name=grafana/properties/grafana?
   value:
-    properties:
       grafana.smtp:
         enabled: ((grafana_smtp_enabled))
         host: ((grafana_smtp_host))
