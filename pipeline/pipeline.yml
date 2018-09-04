@@ -15,6 +15,11 @@ resources:
   source:
     uri: https://github.com/pivotal-cf/pcf-prometheus-pipeline.git
     branch: master
+- name: pcf-prometheus-pipeline-myminseok
+  type: git
+  source:
+    uri: https://github.com/myminseok/pcf-prometheus-pipeline.git
+    branch: master
 - name: prometheus-release-git
   type: git
   source:
@@ -51,6 +56,7 @@ jobs:
   - get: pcf-prometheus-pipeline
   - task: create-uaa-clients
     file: pcf-prometheus-pipeline/pipeline/tasks/create-uaa-clients.yml
+    tags: [pcf]
     params:
       opsman_url: ((opsman_url))
       pcf_opsman_admin_username: ((pcf_opsman_admin_username))
@@ -68,9 +74,11 @@ jobs:
     - get: pcf-bosh-creds
   - task: install-node-exporter
     file: pcf-prometheus-pipeline/pipeline/tasks/install-node-exporter.yml
+    tags: [pcf]
 
 - name: deploy
   plan:
+  - get: pcf-prometheus-pipeline-myminseok
   - get: pcf-prometheus-pipeline
     passed: [install-node-exporter]
   - get: prometheus-release-git
@@ -80,15 +88,18 @@ jobs:
       deployment: ((deployment_name))
   - task: retrieve-params-from-opsman
     file: pcf-prometheus-pipeline/pipeline/tasks/retrieve-params-from-opsman.yml
+    tags: [pcf]
     params:
       pcf_opsman_admin_username: ((pcf_opsman_admin_username))
       pcf_opsman_admin_password: ((pcf_opsman_admin_password))
       opsman_url: ((opsman_url))
   - task: check-if-migration-required
     file: pcf-prometheus-pipeline/pipeline/tasks/check-if-migration-required.yml
+    tags: [pcf]
     params:
       deployment_name: ((deployment_name))
   - put: bosh-deployment
+    tags: [pcf]
     params:
       source_file: pcf-bosh-creds/((director_for_deployment)).json
       deployment: ((deployment_name))
@@ -101,9 +112,11 @@ jobs:
       - prometheus-release-git/manifests/operators/enable-bosh-uaa.yml
       - prometheus-release-git/manifests/operators/monitor-cf.yml
       - prometheus-release-git/manifests/operators/monitor-node.yml
+      - prometheus-release-git/manifests/operators/enable-cf-route-registrar.yml
       - pcf-prometheus-pipeline/pcf-cloud-config-ops.yml
       - pcf-prometheus-pipeline/pcf-colocate-firehose_exporter.yml
       - pcf-prometheus-pipeline/pcf-local-cf_exporter.yml
+      - pcf-prometheus-pipeline-myminseok/pipeline/grafana-smtp.yml
       vars:
         network: ((deploy_network))
         azs: ((deploy_azs))
@@ -117,6 +130,14 @@ jobs:
         uaa_clients_firehose_exporter_secret: ((uaa_clients_firehose_exporter_secret))
         uaa_bosh_exporter_client_secret: ((uaa_bosh_exporter_client_secret))
         skip_ssl_verify: ((skip_ssl_verify))
+        system_domain: ((system_domain))
+        cf_deployment_name: ((cf_deployment_name))
+        grafana_smtp_enabled: ((grafana_smtp_enabled))
+        grafana_smtp_host: ((grafana_smtp_host))
+        grafana_smtp_user: ((grafana_smtp_user))
+        grafana_smtp_password: ((grafana_smtp_password))
+        grafana_smtp_from_address: ((grafana_smtp_from_address))
+        grafana_smtp_from_name: ((grafana_smtp_from_name))
       vars_files:
         - pcf-bosh-creds/pcf_bosh_director.yml
         - dynamic-params/params.yml
@@ -127,6 +148,7 @@ jobs:
   - get: pcf-bosh-creds
   - task: delete-deployment
     file: pcf-prometheus-pipeline/pipeline/tasks/delete-prometheus.yml
+    tags: [pcf]
     params:
       deployment: ((deployment_name))
       opsman_url: ((opsman_url))

@@ -47,3 +47,16 @@ deploy_vm_type_small: small
 metrics_environment: pcf
 
 skip_ssl_verify: true
+
+system_domain: 
+
+cf_deployment_name: 
+
+
+grafana_smtp_enabled: true
+#  smtp.gmail.com:587
+grafana_smtp_host: 
+grafana_smtp_user: 
+grafana_smtp_password: 
+grafana_smtp_from_address: 
+grafana_smtp_from_name: 

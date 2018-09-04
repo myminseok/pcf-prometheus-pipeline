@@ -1,3 +1,61 @@
+# enabling SMTP on Prometheus grafana.
+This configuration will setup smtp on grafana.ini.
+
+![image](/deploy-prometheus.png "deploy-prometheus")
+
+![image](/grafana-smtp.png "testing grafana smtp")
+
+## prerequisite
+- install bosh (https://github.com/cloudfoundry/bosh-deployment)
+- install concourse ( https://github.com/concourse/concourse-bosh-deployment)
+
+## configure ops-file on pipeline.yml
+you can store any git repo if you want.
+```
+resources:
+- name: pcf-prometheus-pipeline-myminseok
+  type: git
+  source:
+    uri: https://github.com/myminseok/pcf-prometheus-pipeline.git
+    branch: master
+
+    ...
+
+- put: bosh-deployment
+    params:
+      ops_files:
+      - pcf-prometheus-pipeline-myminseok/pipeline/grafana-smtp.yml
+      vars:
+        grafana_smtp_enabled: ((grafana_smtp_enabled))
+        grafana_smtp_host: ((grafana_smtp_host))
+        grafana_smtp_user: ((grafana_smtp_user))
+        grafana_smtp_password: ((grafana_smtp_password))
+        grafana_smtp_from_address: ((grafana_smtp_from_address))
+        grafana_smtp_from_name: ((grafana_smtp_from_name))
+
+```
+## params.yml
+```
+grafana_smtp_enabled: true
+grafana_smtp_host: smtp.gmail.com:587
+grafana_smtp_user: test@gmail.com
+grafana_smtp_password: PASS
+grafana_smtp_from_address: test@gmail.com
+grafana_smtp_from_name: admin
+
+```
+
+## deploy prometheus
+
+```
+fly -t target sp -p deploy-prometheus  -c pipeline.yml -l params.yml
+
+```
+
+
+
+
+
 # Concourse pipeline for deploying Prometheus to monitor Pivotal Cloud Foundry
 
 This pipeline is only compatible with PCF 1.12 and newer. If you are using an older version then please use [this pipeline](https://github.com/pivotal-cf/prometheus-on-PCF/tree/74fba4b3401340278d9cb66b4a8076b328de37b8) instead.
