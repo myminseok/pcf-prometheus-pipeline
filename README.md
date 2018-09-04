@@ -9,6 +9,9 @@ once successfully deploy concourse, then /var/vcap/jobs/grafana/config/grafana.i
 
 ![image](/grafana-smtp.png "testing grafana smtp")
 
+![image](/grafana-alert-email.png "testing grafana-alert-email")
+
+
 ## prerequisite
 - install bosh (https://github.com/cloudfoundry/bosh-deployment)
 - install concourse ( https://github.com/concourse/concourse-bosh-deployment)
