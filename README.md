@@ -1,8 +1,6 @@
 # enabling SMTP on Prometheus grafana.
-This configuration will setup smtp on grafana.ini via concourse pipeline. so that you can setup email alert using grafana dashboard and prometheus alertmanager.
-
-once successfully deploy concourse, then /var/vcap/jobs/grafana/config/grafana.ini will have smtp setup automatically in prometheus bosh deployments.
-
+This configuration is for concourse pcf-prometheus-pipeline's ops-file and will setup smtp on grafana so that you can setup email alert using grafana dashboard and prometheus alertmanager.
+smtp will be set on /var/vcap/jobs/grafana/config/grafana.ini config file in bosh deployed grafana VM.
 
 
 ![image](/deploy-prometheus.png "deploy-prometheus")
