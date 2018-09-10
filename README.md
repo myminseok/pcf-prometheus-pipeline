@@ -1,4 +1,4 @@
-# enabling SMTP on Prometheus grafana.
+# Enabling SMTP on Prometheus grafana.
 This configuration is for concourse pcf-prometheus-pipeline's ops-file and will setup smtp on grafana so that you can setup email alert using grafana dashboard and prometheus alertmanager.
 smtp will be set on /var/vcap/jobs/grafana/config/grafana.ini config file in bosh deployed grafana VM.
 
@@ -10,11 +10,10 @@ smtp will be set on /var/vcap/jobs/grafana/config/grafana.ini config file in bos
 ![image](/grafana-alert-email.png "testing grafana-alert-email")
 
 
-## prerequisite
-- install bosh (https://github.com/cloudfoundry/bosh-deployment)
-- install concourse ( https://github.com/concourse/concourse-bosh-deployment)
-
-## configure ops-file on pipeline.yml
+## Installation
+1. prepare bosh env (https://github.com/cloudfoundry/bosh-deployment)
+2. prepare concourse ( https://github.com/concourse/concourse-bosh-deployment)
+3. configure ops-file on pipeline.yml
 you can store any git repo if you want.
 ```
 resources:
@@ -39,7 +38,7 @@ resources:
         grafana_smtp_from_name: ((grafana_smtp_from_name))
 
 ```
-## params.yml
+4. edit params.yml
 ```
 grafana_smtp_enabled: true
 grafana_smtp_host: smtp.gmail.com:587
@@ -50,7 +49,7 @@ grafana_smtp_from_name: admin
 
 ```
 
-## deploy prometheus
+5. deploy prometheus
 
 ```
 fly -t target sp -p deploy-prometheus  -c pipeline.yml -l params.yml
