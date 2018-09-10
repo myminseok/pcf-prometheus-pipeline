@@ -1,4 +1,4 @@
-# Enabling SMTP on Prometheus grafana.
+# Enabling Alert(email, slack) on Prometheus grafana.
 This configuration is for concourse pcf-prometheus-pipeline's ops-file and will setup smtp on grafana so that you can setup email alert using grafana dashboard and prometheus alertmanager.
 smtp will be set on /var/vcap/jobs/grafana/config/grafana.ini config file in bosh deployed grafana VM.
 
@@ -14,7 +14,7 @@ smtp will be set on /var/vcap/jobs/grafana/config/grafana.ini config file in bos
 1. prepare bosh env (https://github.com/cloudfoundry/bosh-deployment)
 2. prepare concourse ( https://github.com/concourse/concourse-bosh-deployment)
 3. configure ops-file on pipeline.yml
-you can store any git repo if you want.
+  you can store any git repo if you want.
 ```
 resources:
 - name: pcf-prometheus-pipeline-myminseok
@@ -29,6 +29,7 @@ resources:
     params:
       ops_files:
       - pcf-prometheus-pipeline-myminseok/pipeline/grafana-smtp.yml
+      - prometheus-release-git/manifests/operators/alertmanager-slack-receiver.yml
       vars:
         grafana_smtp_enabled: ((grafana_smtp_enabled))
         grafana_smtp_host: ((grafana_smtp_host))
@@ -36,6 +37,8 @@ resources:
         grafana_smtp_password: ((grafana_smtp_password))
         grafana_smtp_from_address: ((grafana_smtp_from_address))
         grafana_smtp_from_name: ((grafana_smtp_from_name))
+        alertmanager_slack_api_url: ((alertmanager_slack_api_url))
+        alertmanager_slack_channel: ((alertmanager_slack_channel))
 
 ```
 4. edit params.yml
@@ -46,6 +49,8 @@ grafana_smtp_user: test@gmail.com
 grafana_smtp_password: PASS
 grafana_smtp_from_address: test@gmail.com
 grafana_smtp_from_name: admin
+alertmanager_slack_api_url: https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
+alertmanager_slack_channel: my_channel
 
 ```
 
