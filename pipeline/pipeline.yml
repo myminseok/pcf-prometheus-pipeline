@@ -116,7 +116,7 @@ jobs:
       - prometheus-release-git/manifests/operators/monitor-node.yml
       - prometheus-release-git/manifests/operators/enable-cf-route-registrar.yml
       - pcf-prometheus-pipeline/pcf-cloud-config-ops.yml
-      - pcf-prometheus-pipeline/pcf-colocate-firehose_exporter.yml
+      - pcf-prometheus-pipeline-minseok/pcf-colocate-firehose_exporter-minseok.yml
       - pcf-prometheus-pipeline/pcf-local-cf_exporter.yml
 #      - pcf-prometheus-pipeline-myminseok/pipeline/grafana-smtp.yml
       - pcf-prometheus-pipeline/pcf-local-retention-policy.yml
